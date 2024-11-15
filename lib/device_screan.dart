@@ -24,7 +24,9 @@ class _DeviceScreenTwoState extends State<DeviceScreen> {
     bluetoothProvider = Provider.of(navKey.currentContext!);
     bluetoothProvider.connect(widget.device);
     bluetoothProvider.readData(widget.device);
+
   }
+
 
   @override
   void dispose() {
@@ -75,7 +77,7 @@ class _DeviceScreenTwoState extends State<DeviceScreen> {
                           isSender: bluetoothProvider.buffer[index].sender == 1
                               ? true
                               : false,
-                          textStyle: TextStyle(color: Colors.black),
+                          textStyle:const TextStyle(color: Colors.black),
                         );
                       }),
                 ),

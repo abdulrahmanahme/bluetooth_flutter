@@ -14,11 +14,11 @@ class BluetoothScreen extends StatefulWidget {
 
 class _BluetoothScreenTwoState extends State<BluetoothScreen> {
   late BluetoothProvider bluetoothProvider;
+  
   @override
   void initState() {
     super.initState();
     bluetoothProvider = Provider.of(navKey.currentContext!);
-
     bluetoothProvider.startScanning();
   }
 
@@ -26,7 +26,7 @@ class _BluetoothScreenTwoState extends State<BluetoothScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('BLE Scanner'),
+        title:const Text('BLE Scanner'),
         elevation: 1,
       ),
       body: RefreshIndicator(
@@ -41,11 +41,13 @@ class _BluetoothScreenTwoState extends State<BluetoothScreen> {
                 return InkWell(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              DeviceScreen(device: bluetooth.devices[index]),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DeviceScreen(
+                          device: bluetooth.devices[index],
+                        ),
+                      ),
+                    );
                   },
                   child: ListTile(
                     title: Text(bluetooth.devices[index].platformName.isNotEmpty
@@ -66,7 +68,7 @@ class _BluetoothScreenTwoState extends State<BluetoothScreen> {
 
   @override
   void dispose() {
-    // FlutterBluePlus.stopScan();
+    FlutterBluePlus.stopScan();
     super.dispose();
   }
 }

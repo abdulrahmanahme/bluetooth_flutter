@@ -17,8 +17,7 @@ class BluetoothProvider extends ChangeNotifier {
   StreamSubscription<List<int>>? stream_sub;
   List<Message> buffer = [];
   List<BluetoothDevice> devices = [];
-    BluetoothDevice? connectedDevice;
-
+  BluetoothDevice? connectedDevice;
 
   final TextEditingController controller = TextEditingController();
 
@@ -48,16 +47,18 @@ class BluetoothProvider extends ChangeNotifier {
     List<BluetoothService> services = await device.discoverServices();
     BluetoothService lastservice = services.last;
     BluetoothCharacteristic lastCharacterist = lastservice.characteristics.last;
-    stream_sub = lastCharacterist.onValueReceived.listen((value) async {
-      if (value.isNotEmpty) {
-        String s = String.fromCharCodes(value);
-        buffer.add(Message(s, 0));
-        notifyListeners();
-      }
-      await lastCharacterist.setNotifyValue(true);
-    });
-  }
 
+    if ( lastCharacterist.properties.notify) {
+        await lastCharacterist.setNotifyValue(true);
+      stream_sub = lastCharacterist.onValueReceived.listen((value) async {
+        if (value.isNotEmpty) {
+          String s = String.fromCharCodes(value);
+          buffer.add(Message(s, 0));
+          notifyListeners();
+        }
+      });
+    }
+  }
 
   void connect(BluetoothDevice device) async {
     stateText = 'connected';
